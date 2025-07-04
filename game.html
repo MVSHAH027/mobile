@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Digital Detox Dash</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', 'Baloo Bhai 2', sans-serif;
+            background-color: #f0f8ff; /* Light sky blue background */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Game Container */
+        #game-container {
+            width: 100%;
+            max-width: 420px; /* Optimal for mobile view */
+            height: 100%;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Game Canvas */
+        #gameCanvas {
+            display: block;
+            background-color: #e0f7fa; /* Light cyan for the game path */
+            width: 100%;
+            flex-grow: 1; /* Canvas takes up available space */
+        }
+
+        /* UI Overlay Elements (Modals) */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+            z-index: 10;
+            border-radius: 20px;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .overlay h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .overlay h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .overlay p {
+            font-size: 1rem;
+            max-width: 300px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin: 5px;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-start {
+            background: linear-gradient(45deg, #4caf50, #81c784);
+            color: white;
+        }
+
+        .btn-lang {
+            background: linear-gradient(45deg, #2196f3, #64b5f6);
+            color: white;
+        }
+        
+        #language-selector {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* Top Bar UI */
+        #top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #4a5568; /* Dark gray-blue */
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        #health-bar-container {
+            width: 120px;
+            height: 20px;
+            background-color: #718096; /* Lighter gray */
+            border-radius: 10px;
+            border: 2px solid white;
+            overflow: hidden;
+        }
+
+        #health-bar {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #68d391, #38a169); /* Green gradient */
+            border-radius: 8px;
+            transition: width 0.3s ease;
+        }
+
+        #score-display {
+            display: flex;
+            align-items: center;
+        }
+        #score-display span {
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <!-- Top UI Bar for Score and Health -->
+        <div id="top-bar">
+            <div id="score-display">
+                <span data-lang-key="score">Score</span>: <span id="score">0</span>
+            </div>
+            <div id="health-bar-container">
+                <div id="health-bar"></div>
+            </div>
+        </div>
+
+        <!-- Game Canvas -->
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- Start Screen Overlay -->
+        <div id="start-screen" class="overlay">
+            <h1 data-lang-key="title">Digital Detox Dash</h1>
+            <p data-lang-key="instructions">Help Yug choose real life over phone distractions! Move left and right to collect good things (📚👨‍👩‍👧‍�❤️) and avoid bad things (📱🎮☢️). Good luck!</p>
+            <button id="start-button" class="btn btn-start" data-lang-key="start">Start Game</button>
+            <div id="language-selector">
+                <button id="lang-en" class="btn btn-lang">English</button>
+                <button id="lang-gu" class="btn btn-lang">ગુજરાતી</button>
+            </div>
+        </div>
+
+        <!-- Game Over Screen Overlay -->
+        <div id="game-over-screen" class="overlay hidden">
+            <h2 data-lang-key="gameOver">Game Over</h2>
+            <p data-lang-key="finalScore">Your Final Score:</p>
+            <p id="final-score" style="font-size: 2rem; font-weight: bold; margin-top: -10px;">0</p>
+            <p data-lang-key="gameOverMsg">You got lost in the digital world. Focus on real life to win!</p>
+            <button id="restart-button" class="btn btn-start" data-lang-key="playAgain">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // --- DOM ELEMENT SELECTION ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gameContainer = document.getElementById('game-container');
+        const startScreen = document.getElementById('start-screen');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const startButton = document.getElementById('start-button');
+        const restartButton = document.getElementById('restart-button');
+        const scoreElement = document.getElementById('score');
+        const finalScoreElement = document.getElementById('final-score');
+        const healthBarElement = document.getElementById('health-bar');
+        const langEnButton = document.getElementById('lang-en');
+        const langGuButton = document.getElementById('lang-gu');
+
+        // --- LANGUAGE DATA ---
+        const langData = {
+            'en': {
+                title: 'Digital Detox Dash',
+                instructions: 'Help Yug choose real life over phone distractions! Move left and right to collect good things (📚👨‍👩‍👧‍👦❤️) and avoid bad things (📱🎮☢️). Good luck!',
+                start: 'Start Game',
+                score: 'Score',
+                gameOver: 'Game Over',
+                finalScore: 'Your Final Score:',
+                gameOverMsg: 'You got lost in the digital world. Focus on real life to win!',
+                playAgain: 'Play Again'
+            },
+            'gu': {
+                title: 'ડિજિટલ ડિટોક્સ ડૅશ',
+                instructions: 'યુગને ફોનના વિક્ષેપો કરતાં વાસ્તવિક જીવન પસંદ કરવામાં મદદ કરો! સારી વસ્તુઓ (📚👨‍👩‍👧‍👦❤️) એકત્ર કરવા અને ખરાબ વસ્તુઓ (📱🎮☢️) ટાળવા માટે ડાબે અને જમણે ખસો. શુભેચ્છા!',
+                start: 'રમત શરૂ કરો',
+                score: 'સ્કોર',
+                gameOver: 'રમત સમાપ્ત',
+                finalScore: 'તમારો અંતિમ સ્કોર:',
+                gameOverMsg: 'તમે ડિજિટલ દુનિયામાં ખોવાઈ ગયા. જીતવા માટે વાસ્તવિક જીવન પર ધ્યાન કેન્દ્રિત કરો!',
+                playAgain: 'ફરીથી રમો'
+            }
+        };
+        let currentLang = 'en';
+
+        // --- GAME CONFIGURATION ---
+        let gameRunning = false;
+        let score = 0;
+        let health = 100;
+        let gameSpeed = 2;
+        let player, items;
+
+        const itemTypes = {
+            GOOD: 'good',
+            BAD: 'bad'
+        };
+
+        const goodItems = ['📚', '👨‍👩‍👧‍👦', '❤️', '🍎', '😊'];
+        const badItems = ['📱', '🎮', '☢️', '🍔', '😠'];
+
+        // --- UTILITY FUNCTIONS ---
+        function resizeCanvas() {
+            canvas.width = gameContainer.clientWidth;
+            canvas.height = gameContainer.clientHeight - document.getElementById('top-bar').offsetHeight;
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-lang-key]').forEach(elem => {
+                const key = elem.getAttribute('data-lang-key');
+                elem.innerText = langData[lang][key];
+            });
+            // Highlight active language button
+            langEnButton.style.opacity = lang === 'en' ? '1' : '0.6';
+            langGuButton.style.opacity = lang === 'gu' ? '1' : '0.6';
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // --- GAME OBJECTS (CLASSES) ---
+        class Player {
+            constructor() {
+                this.width = 50;
+                this.height = 50;
+                this.x = canvas.width / 2 - this.width / 2;
+                this.y = canvas.height - this.height - 20;
+                this.emoji = '🏃';
+            }
+
+            draw() {
+                ctx.font = '40px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(this.emoji, this.x + this.width / 2, this.y + this.height - 10);
+            }
+
+            move(x) {
+                this.x = x - this.width / 2;
+                // Boundary checks
+                if (this.x < 0) this.x = 0;
+                if (this.x + this.width > canvas.width) this.x = canvas.width - this.width;
+            }
+        }
+
+        class Item {
+            constructor() {
+                this.width = 40;
+                this.height = 40;
+                this.x = getRandomInt(0, canvas.width - this.width);
+                this.y = -this.height;
+                this.type = Math.random() < 0.55 ? itemTypes.BAD : itemTypes.GOOD;
+                this.emoji = this.type === itemTypes.GOOD ?
+                    goodItems[getRandomInt(0, goodItems.length - 1)] :
+                    badItems[getRandomInt(0, badItems.length - 1)];
+            }
+
+            update() {
+                this.y += gameSpeed;
+            }
+
+            draw() {
+                ctx.font = '30px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(this.emoji, this.x + this.width / 2, this.y + this.height - 10);
+            }
+        }
+
+        // --- GAME LOGIC ---
+        function init() {
+            resizeCanvas();
+            score = 0;
+            health = 100;
+            gameSpeed = 2;
+            updateUI();
+
+            player = new Player();
+            items = [new Item()];
+
+            gameOverScreen.classList.add('hidden');
+            startScreen.classList.add('hidden');
+            gameRunning = true;
+            gameLoop();
+        }
+
+        function updateUI() {
+            scoreElement.innerText = score;
+            healthBarElement.style.width = health + '%';
+            // Change health bar color based on health
+            if (health > 60) {
+                 healthBarElement.style.background = 'linear-gradient(90deg, #68d391, #38a169)'; // Green
+            } else if (health > 30) {
+                 healthBarElement.style.background = 'linear-gradient(90deg, #f6e05e, #d69e2e)'; // Yellow
+            } else {
+                 healthBarElement.style.background = 'linear-gradient(90deg, #fc8181, #c53030)'; // Red
+            }
+        }
+
+        function checkCollisions() {
+            items.forEach((item, index) => {
+                if (
+                    player.x < item.x + item.width &&
+                    player.x + player.width > item.x &&
+                    player.y < item.y + item.height &&
+                    player.y + player.height > item.y
+                ) {
+                    // Collision detected
+                    if (item.type === itemTypes.GOOD) {
+                        score += 10;
+                        health = Math.min(100, health + 5); // Increase health slightly
+                    } else {
+                        health -= 20; // Decrease health significantly
+                    }
+                    items.splice(index, 1); // Remove item
+                    updateUI();
+                }
+            });
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            finalScoreElement.innerText = score;
+            gameOverScreen.classList.remove('hidden');
+        }
+
+        let frameCount = 0;
+        function gameLoop() {
+            if (!gameRunning) return;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update and draw items
+            items.forEach((item, index) => {
+                item.update();
+                item.draw();
+                // Remove items that go off-screen
+                if (item.y > canvas.height) {
+                    items.splice(index, 1);
+                }
+            });
+
+            // Generate new items periodically
+            frameCount++;
+            if (frameCount % 60 === 0) { // Add a new item every ~1 second
+                items.push(new Item());
+            }
+
+            // Draw player
+            player.draw();
+
+            // Check for collisions
+            checkCollisions();
+            
+            // Increase difficulty over time
+            if(frameCount % 300 === 0) { // Every 5 seconds
+                gameSpeed += 0.2;
+            }
+
+            // Check for game over condition
+            if (health <= 0) {
+                gameOver();
+            } else {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        // --- EVENT LISTENERS ---
+        window.addEventListener('resize', resizeCanvas);
+
+        startButton.addEventListener('click', init);
+        restartButton.addEventListener('click', init);
+
+        langEnButton.addEventListener('click', () => setLanguage('en'));
+        langGuButton.addEventListener('click', () => setLanguage('gu'));
+
+        // Player Controls (Touch and Mouse)
+        function handleMove(e) {
+            if (!gameRunning) return;
+            const rect = canvas.getBoundingClientRect();
+            let clientX;
+            if (e.touches) {
+                clientX = e.touches[0].clientX;
+            } else {
+                clientX = e.clientX;
+            }
+            player.move(clientX - rect.left);
+            e.preventDefault();
+        }
+
+        canvas.addEventListener('touchmove', handleMove, { passive: false });
+        canvas.addEventListener('mousemove', handleMove);
+        
+        // Keyboard controls for desktop
+        document.addEventListener('keydown', (e) => {
+            if (!gameRunning) return;
+            const moveSpeed = 20;
+            if (e.key === 'ArrowLeft') {
+                player.move(player.x - moveSpeed + player.width / 2);
+            } else if (e.key === 'ArrowRight') {
+                player.move(player.x + moveSpeed + player.width / 2);
+            }
+        });
+
+        // --- INITIALIZATION ---
+        setLanguage('en'); // Set default language on load
+        resizeCanvas();
+
+    </script>
+</body>
+</html>
+�

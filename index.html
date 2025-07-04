@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>સ્માર્ટફોન: અમૃત કે ઝેર?</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Vadodara:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        /* Set default fonts. 'Hind Vadodara' for Gujarati, 'Poppins' for English. */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc; /* gray-50 */
+            scroll-behavior: smooth;
+        }
+        .font-gujarati {
+            font-family: 'Hind Vadodara', sans-serif;
+        }
+        /* Style for the language switcher buttons */
+        .lang-btn.active {
+            background-color: #ffffff;
+            color: #2563eb; /* blue-600 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        /* Fade-in animation for elements on scroll */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-blue-700 to-indigo-600 text-white sticky top-0 z-50 shadow-lg">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 id="nav-title" class="text-xl font-bold font-gujarati">મોબાઇલની માયાજાળ</h1>
+            <div class="flex items-center bg-blue-900/50 rounded-full p-1">
+                <button id="btn-gu" class="lang-btn active font-gujarati text-sm font-semibold px-4 py-1 rounded-full transition-all duration-300">ગુજરાતી</button>
+                <button id="btn-en" class="lang-btn text-sm font-semibold px-4 py-1 rounded-full transition-all duration-300">English</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-b from-indigo-600 to-blue-500 text-white pt-12 pb-16 text-center">
+            <div class="container mx-auto px-6">
+                <div class="w-20 h-20 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-6">
+                    <i data-feather="smartphone" class="w-10 h-10"></i>
+                </div>
+                <h2 id="hero-title" class="text-4xl md:text-5xl font-bold mb-4 font-gujarati">સ્માર્ટફોન: અમૃત કે ઝેર?</h2>
+                <p id="hero-subtitle" class="text-lg md:text-xl max-w-3xl mx-auto font-gujarati">આપણા જીવનનો અભિન્ન અંગ બની ગયેલો સ્માર્ટફોન, શું તે ખરેખર આપણો મિત્ર છે કે પછી એક છૂપો દુશ્મન?</p>
+            </div>
+        </section>
+
+        <!-- Key Issues Section -->
+        <section class="py-12 md:py-16 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-10">
+                    <h3 id="issues-title" class="text-3xl font-bold text-gray-900 font-gujarati">વિચારવા જેવી વાતો</h3>
+                    <p id="issues-subtitle" class="mt-2 text-gray-600 font-gujarati">સ્માર્ટફોનના અતાર્કિક ઉપયોગથી થતા કેટલાક ગંભીર નુકસાન.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Card 1: Character -->
+                    <div class="card bg-white p-8 rounded-2xl shadow-lg border-t-4 border-purple-500 fade-in-up">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4"><i data-feather="shield-off" class="w-6 h-6 text-purple-600"></i></div>
+                        <h4 id="card1-title" class="text-xl font-bold mb-2 font-gujarati">ચારિત્ર્યનું કેન્સર</h4>
+                        <p id="card1-desc" class="text-gray-600 font-gujarati">અયોગ્ય સામગ્રી અને ઘટતી સંવેદનશીલતા આપણા નૈતિક મૂલ્યોનો નાશ કરી રહી છે, જે સમાજ માટે ઘાતક છે.</p>
+                    </div>
+                    <!-- Card 2: Health -->
+                    <div class="card bg-white p-8 rounded-2xl shadow-lg border-t-4 border-red-500 fade-in-up">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4"><i data-feather="activity" class="w-6 h-6 text-red-600"></i></div>
+                        <h4 id="card2-title" class="text-xl font-bold mb-2 font-gujarati">આરોગ્ય પર હુમલો</h4>
+                        <p id="card2-desc" class="text-gray-600 font-gujarati">રેડિએશન, આંખો પર તણાવ અને ઊંઘની સમસ્યાઓ આપણા શારીરિક અને માનસિક સ્વાસ્થ્યને નબળું પાડી રહી છે.</p>
+                    </div>
+                    <!-- Card 3: Relationships -->
+                    <div class="card bg-white p-8 rounded-2xl shadow-lg border-t-4 border-blue-500 fade-in-up">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4"><i data-feather="users" class="w-6 h-6 text-blue-600"></i></div>
+                        <h4 id="card3-title" class="text-xl font-bold mb-2 font-gujarati">સંબંધોમાં અંતર</h4>
+                        <p id="card3-desc" class="text-gray-600 font-gujarati">ભૌતિક રીતે સાથે હોવા છતાં, આપણે વર્ચ્યુઅલ દુનિયામાં ખોવાયેલા છીએ, જે નજીકના સંબંધોને નુકસાન પહોંચાડે છે.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Section -->
+        <section class="py-12 md:py-16">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-10">
+                    <h3 id="video-title" class="text-3xl font-bold text-gray-900 font-gujarati">જુઓ, વિચારો અને સમજો</h3>
+                    <p id="video-subtitle" class="mt-2 text-gray-600 font-gujarati">આ વિડિઓઝ તમને સ્માર્ટફોન અને સોશિયલ મીડિયાની દુનિયાની ઊંડી સમજ આપશે.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Video 1 -->
+                    <div class="video-card bg-white rounded-2xl shadow-lg overflow-hidden fade-in-up">
+                        <div class="aspect-w-16 aspect-h-9">
+                            <iframe src="https://www.youtube.com/embed/TQOWhj1SeTA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-6">
+                            <h5 id="vid1-title" class="font-bold font-gujarati">પોડકાસ્ટ: સ્માર્ટફોન - અમૃત કે ઝેર?</h5>
+                            <p id="vid1-desc" class="text-sm text-gray-600 mt-1 font-gujarati">તમારો ફોન મિત્ર છે કે દુશ્મન? મોબાઇલની માયાજાળ પર એક ઊંડાણપૂર્વકનું વિશ્લેષણ.</p>
+                            <a href="https://www.youtube.com/watch?v=TQOWhj1SeTA" target="_blank" rel="noopener noreferrer" class="inline-flex items-center mt-4 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                                <i data-feather="external-link" class="w-4 h-4 mr-2"></i>
+                                <span id="vid1-link-text" class="font-gujarati">YouTube પર જુઓ</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Video 2 -->
+                    <div class="video-card bg-white rounded-2xl shadow-lg overflow-hidden fade-in-up">
+                        <div class="aspect-w-16 aspect-h-9">
+                            <iframe src="https://www.youtube.com/embed/JJd368iHiZ8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-6">
+                            <h5 id="vid2-title" class="font-bold font-gujarati">કેરેક્ટર નું કેન્સર: સ્માર્ટફોન</h5>
+                            <p id="vid2-desc" class="text-sm text-gray-600 mt-1 font-gujarati">શું આપણે મોબાઇલના ગુલામ બની ગયા છીએ? ચારિત્ર્ય પર થતી અસરોની ચોંકાવનારી હકીકત.</p>
+                            <a href="https://www.youtube.com/watch?v=JJd368iHiZ8" target="_blank" rel="noopener noreferrer" class="inline-flex items-center mt-4 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                                <i data-feather="external-link" class="w-4 h-4 mr-2"></i>
+                                <span id="vid2-link-text" class="font-gujarati">YouTube પર જુઓ</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Video 3 -->
+                    <div class="video-card bg-white rounded-2xl shadow-lg overflow-hidden fade-in-up">
+                        <div class="aspect-w-16 aspect-h-9">
+                            <iframe src="https://www.youtube.com/embed/ioaY1z2trx4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-6">
+                            <h5 id="vid3-title" class="font-bold font-gujarati">એનિમેટેડ ફિલ્મ: લાઈક અને ફોલો</h5>
+                            <p id="vid3-desc" class="text-sm text-gray-600 mt-1 font-gujarati">સોશિયલ મીડિયા પર માન્યતાની શોધ પાછળની વાસ્તવિકતા દર્શાવતી એક સુંદર ટૂંકી ફિલ્મ.</p>
+                             <a href="https://www.youtube.com/watch?v=ioaY1z2trx4" target="_blank" rel="noopener noreferrer" class="inline-flex items-center mt-4 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                                <i data-feather="external-link" class="w-4 h-4 mr-2"></i>
+                                <span id="vid3-link-text" class="font-gujarati">YouTube પર જુઓ</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Video 4 -->
+                    <div class="video-card bg-white rounded-2xl shadow-lg overflow-hidden fade-in-up">
+                        <div class="aspect-w-16 aspect-h-9">
+                            <iframe src="https://www.youtube.com/embed/QugooaNRnsk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-6">
+                            <h5 id="vid4-title" class="font-bold font-gujarati">શોર્ટ ફિલ્મ: સોશિયલ મીડિયાનું વ્યસન</h5>
+                            <p id="vid4-desc" class="text-sm text-gray-600 mt-1 font-gujarati">આ ટૂંકી ફિલ્મ બતાવે છે કે કેવી રીતે સોશિયલ મીડિયાનું વ્યસન વાસ્તવિક જીવનને પ્રભાવિત કરે છે.</p>
+                            <a href="https://www.youtube.com/watch?v=QugooaNRnsk" target="_blank" rel="noopener noreferrer" class="inline-flex items-center mt-4 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                                <i data-feather="external-link" class="w-4 h-4 mr-2"></i>
+                                <span id="vid4-link-text" class="font-gujarati">YouTube પર જુઓ</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Infographics Section -->
+        <section class="bg-gray-50">
+            <div class="container mx-auto px-6 py-12 md:py-16">
+                <div class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white p-10 rounded-2xl shadow-xl text-center fade-in-up">
+                    <div class="w-16 h-16 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-6">
+                        <i data-feather="info" class="w-8 h-8"></i>
+                    </div>
+                    <h3 id="info-title" class="text-3xl font-bold mb-3 font-gujarati">વિગતવાર માહિતી</h3>
+                    <p id="info-desc" class="mb-8 max-w-2xl mx-auto font-gujarati">સ્માર્ટફોનના ઉપયોગના વિવિધ પાસાઓ અને તેના પ્રભાવ વિશે ઊંડાણપૂર્વક જાણવા માટે અહીં ક્લિક કરો.</p>
+                    <a href="./info.html" id="info-link" target="_blank" class="inline-block bg-white text-indigo-600 font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition-transform transform hover:scale-105 font-gujarati">માહિતી જુઓ</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section class="bg-gray-50 pt-0 pb-12 md:pb-16">
+            <div class="container mx-auto px-6">
+                <div class="bg-gradient-to-r from-green-500 to-teal-500 text-white p-10 rounded-2xl shadow-xl text-center fade-in-up">
+                    <div class="w-16 h-16 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-6">
+                        <i data-feather="check-circle" class="w-8 h-8"></i>
+                    </div>
+                    <h3 id="quiz-title" class="text-3xl font-bold mb-3 font-gujarati">તમારી જાગૃતિ ચકાસો</h3>
+                    <p id="quiz-desc" class="mb-8 max-w-2xl mx-auto font-gujarati">આ વિષય પર તમે કેટલું જાણો છો? આ રસપ્રદ ક્વિઝ રમીને તમારા જ્ઞાનને ચકાસો અને નવી માહિતી મેળવો.</p>
+                    <a href="./quiz1.html" id="quiz-link" target="_blank" class="inline-block bg-white text-green-600 font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition-transform transform hover:scale-105 font-gujarati">ક્વિઝ શરૂ કરો</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-gray-300">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p id="footer-credit" class="font-bold text-lg mb-2 font-gujarati">પ્રેરણા અને સંપર્ક</p>
+            <p class="font-gujarati">મનીષ વી. શાહ (વડોદરા)</p>
+            <p>WhatsApp: 94299 26447</p>
+            <p id="footer-copyright" class="text-sm text-gray-500 mt-6 font-gujarati">© 2024. જાગૃતિ ફેલાવવાના ઉમદા હેતુથી બનાવવામાં આવેલ છે.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- CONTENT DATA ---
+        // All text content is stored here for easy language switching.
+        const content = {
+            gu: {
+                navTitle: "મોબાઇલની માયાજાળ",
+                heroTitle: "સ્માર્ટફોન: અમૃત કે ઝેર?",
+                heroSubtitle: "આપણા જીવનનો અભિન્ન અંગ બની ગયેલો સ્માર્ટફોન, શું તે ખરેખર આપણો મિત્ર છે કે પછી એક છૂપો દુશ્મન?",
+                issuesTitle: "વિચારવા જેવી વાતો",
+                issuesSubtitle: "સ્માર્ટફોનના અતાર્કિક ઉપયોગથી થતા કેટલાક ગંભીર નુકસાન.",
+                card1Title: "ચારિત્ર્યનું કેન્સર",
+                card1Desc: "અયોગ્ય સામગ્રી અને ઘટતી સંવેદનશીલતા આપણા નૈતિક મૂલ્યોનો નાશ કરી રહી છે, જે સમાજ માટે ઘાતક છે.",
+                card2Title: "આરોગ્ય પર હુમલો",
+                card2Desc: "રેડિએશન, આંખો પર તણાવ અને ઊંઘની સમસ્યાઓ આપણા શારીરિક અને માનસિક સ્વાસ્થ્યને નબળું પાડી રહી છે.",
+                card3Title: "સંબંધોમાં અંતર",
+                card3Desc: "ભૌતિક રીતે સાથે હોવા છતાં, આપણે વર્ચ્યુઅલ દુનિયામાં ખોવાયેલા છીએ, જે નજીકના સંબંધોને નુકસાન પહોંચાડે છે.",
+                infoTitle: "વિગતવાર માહિતી",
+                infoDesc: "સ્માર્ટફોનના ઉપયોગના વિવિધ પાસાઓ અને તેના પ્રભાવ વિશે ઊંડાણપૂર્વક જાણવા માટે અહીં ક્લિક કરો.",
+                infoLink: "માહિતી જુઓ",
+                videoTitle: "જુઓ, વિચારો અને સમજો",
+                videoSubtitle: "આ વિડિઓઝ તમને સ્માર્ટફોન અને સોશિયલ મીડિયાની દુનિયાની ઊંડી સમજ આપશે.",
+                vid1Title: "પોડકાસ્ટ: સ્માર્ટફોન - અમૃત કે ઝેર?",
+                vid1Desc: "તમારો ફોન મિત્ર છે કે દુશ્મન? મોબાઇલની માયાજાળ પર એક ઊંડાણપૂર્વકનું વિશ્લેષણ.",
+                vid2Title: "કેરેક્ટર નું કેન્સર: સ્માર્ટફોન",
+                vid2Desc: "શું આપણે મોબાઇલના ગુલામ બની ગયા છીએ? ચારિત્ર્ય પર થતી અસરોની ચોંકાવનારી હકીકત.",
+                vid3Title: "એનિમેટેડ ફિલ્મ: લાઈક અને ફોલો",
+                vid3Desc: "સોશિયલ મીડિયા પર માન્યતાની શોધ પાછળની વાસ્તવિકતા દર્શાવતી એક સુંદર ટૂંકી ફિલ્મ.",
+                vid4Title: "શોર્ટ ફિલ્મ: સોશિયલ મીડિયાનું વ્યસન",
+                vid4Desc: "આ ટૂંકી ફિલ્મ બતાવે છે કે કેવી રીતે સોશિયલ મીડિયાનું વ્યસન વાસ્તવિક જીવનને પ્રભાવિત કરે છે.",
+                videoLinkText: "YouTube પર જુઓ",
+                quizTitle: "તમારી જાગૃતિ ચકાસો",
+                quizDesc: "આ વિષય પર તમે કેટલું જાણો છો? આ રસપ્રદ ક્વિઝ રમીને તમારા જ્ઞાનને ચકાસો અને નવી માહિતી મેળવો.",
+                quizLink: "ક્વિઝ શરૂ કરો",
+                footerCredit: "પ્રેરણા અને સંપર્ક",
+                footerCopyright: "© 2024. જાગૃતિ ફેલાવવાના ઉમદા હેતુથી બનાવવામાં આવેલ છે."
+            },
+            en: {
+                navTitle: "The Smartphone Illusion",
+                heroTitle: "Smartphone: Nectar or Poison?",
+                heroSubtitle: "The smartphone, which has become an integral part of our lives, is it truly our friend or a hidden enemy?",
+                issuesTitle: "Points to Ponder",
+                issuesSubtitle: "Some of the serious harms caused by the irrational use of smartphones.",
+                card1Title: "Cancer of Character",
+                card1Desc: "Inappropriate content and decreasing sensitivity are destroying our moral values, which is fatal for society.",
+                card2Title: "Attack on Health",
+                card2Desc: "Radiation, eye strain, and sleep problems are weakening our physical and mental health.",
+                card3Title: "Distance in Relationships",
+                card3Desc: "Despite being physically together, we are lost in the virtual world, which harms our close relationships.",
+                infoTitle: "Detailed Information",
+                infoDesc: "Click here to learn more in-depth about the various aspects and impacts of smartphone use.",
+                infoLink: "View Info",
+                videoTitle: "Watch, Think, and Understand",
+                videoSubtitle: "These videos will give you a deeper understanding of the world of smartphones and social media.",
+                vid1Title: "Podcast: Smartphone - Nectar or Poison?",
+                vid1Desc: "Is your phone a friend or an enemy? An in-depth analysis of the smartphone illusion.",
+                vid2Title: "Character's Cancer: Smartphone",
+                vid2Desc: "Have we become slaves to our mobile phones? The shocking truth about the effects on character.",
+                vid3Title: "Animated Film: Like and Follow",
+                vid3Desc: "A beautiful short film depicting the reality behind the search for validation on social media.",
+                vid4Title: "Short Film: Social Media Addiction",
+                vid4Desc: "This short film shows how social media addiction affects real life.",
+                videoLinkText: "Watch on YouTube",
+                quizTitle: "Test Your Awareness",
+                quizDesc: "How much do you know about this topic? Test your knowledge and gain new insights by playing this interesting quiz.",
+                quizLink: "Start Quiz",
+                footerCredit: "Inspiration & Contact",
+                footerCopyright: "© 2024. Created for the noble purpose of spreading awareness."
+            }
+        };
+
+        // --- DOM ELEMENTS ---
+        const btnGu = document.getElementById('btn-gu');
+        const btnEn = document.getElementById('btn-en');
+        const allGujaratiElements = document.querySelectorAll('.font-gujarati');
+        const body = document.querySelector('body');
+
+        // --- FUNCTIONS ---
+
+        /**
+         * Updates the text content of the page based on the selected language.
+         * @param {string} lang - The selected language ('gu' or 'en').
+         */
+        function setLanguage(lang) {
+            const data = content[lang];
+            
+            // Update text for all elements with an ID
+            document.getElementById('nav-title').textContent = data.navTitle;
+            document.getElementById('hero-title').textContent = data.heroTitle;
+            document.getElementById('hero-subtitle').textContent = data.heroSubtitle;
+            document.getElementById('issues-title').textContent = data.issuesTitle;
+            document.getElementById('issues-subtitle').textContent = data.issuesSubtitle;
+            document.getElementById('card1-title').textContent = data.card1Title;
+            document.getElementById('card1-desc').textContent = data.card1Desc;
+            document.getElementById('card2-title').textContent = data.card2Title;
+            document.getElementById('card2-desc').textContent = data.card2Desc;
+            document.getElementById('card3-title').textContent = data.card3Title;
+            document.getElementById('card3-desc').textContent = data.card3Desc;
+            document.getElementById('info-title').textContent = data.infoTitle;
+            document.getElementById('info-desc').textContent = data.infoDesc;
+            document.getElementById('info-link').textContent = data.infoLink;
+            document.getElementById('video-title').textContent = data.videoTitle;
+            document.getElementById('video-subtitle').textContent = data.videoSubtitle;
+            document.getElementById('vid1-title').textContent = data.vid1Title;
+            document.getElementById('vid1-desc').textContent = data.vid1Desc;
+            document.getElementById('vid1-link-text').textContent = data.videoLinkText;
+            document.getElementById('vid2-title').textContent = data.vid2Title;
+            document.getElementById('vid2-desc').textContent = data.vid2Desc;
+            document.getElementById('vid2-link-text').textContent = data.videoLinkText;
+            document.getElementById('vid3-title').textContent = data.vid3Title;
+            document.getElementById('vid3-desc').textContent = data.vid3Desc;
+            document.getElementById('vid3-link-text').textContent = data.videoLinkText;
+            document.getElementById('vid4-title').textContent = data.vid4Title;
+            document.getElementById('vid4-desc').textContent = data.vid4Desc;
+            document.getElementById('vid4-link-text').textContent = data.videoLinkText;
+            document.getElementById('quiz-title').textContent = data.quizTitle;
+            document.getElementById('quiz-desc').textContent = data.quizDesc;
+            document.getElementById('quiz-link').textContent = data.quizLink;
+            document.getElementById('footer-credit').textContent = data.footerCredit;
+            document.getElementById('footer-copyright').textContent = data.footerCopyright;
+
+            // Update button styles and body font
+            if (lang === 'gu') {
+                body.lang = 'gu';
+                btnGu.classList.add('active');
+                btnEn.classList.remove('active');
+                allGujaratiElements.forEach(el => el.classList.add('font-gujarati'));
+            } else {
+                body.lang = 'en';
+                btnEn.classList.add('active');
+                btnGu.classList.remove('active');
+                allGujaratiElements.forEach(el => el.classList.remove('font-gujarati'));
+            }
+        }
+        
+        // --- EVENT LISTENERS ---
+        btnGu.addEventListener('click', () => setLanguage('gu'));
+        btnEn.addEventListener('click', () => setLanguage('en'));
+
+        // --- Intersection Observer for Scroll Animations ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1 
+        });
+
+        const elementsToAnimate = document.querySelectorAll('.fade-in-up');
+        elementsToAnimate.forEach(el => observer.observe(el));
+
+        // --- INITIALIZATION ---
+        // Set default language and initialize icons
+        document.addEventListener('DOMContentLoaded', () => {
+            setLanguage('gu');
+            feather.replace();
+        });
+    </script>
+</body>
+</html>

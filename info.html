@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartphone: Friend or Foe?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Vadodara:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Define custom fonts */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+            scroll-behavior: smooth;
+        }
+        .font-gujarati {
+            font-family: 'Hind Vadodara', sans-serif;
+        }
+        /* Custom styles for the header and language switcher */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        /* Style for the infographic cards */
+        .info-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        /* Color coding for different sections */
+        .border-red-500 { border-color: #ef4444; }
+        .border-yellow-500 { border-color: #f59e0b; }
+        .border-blue-500 { border-color: #3b82f6; }
+        .border-green-500 { border-color: #22c55e; }
+        .border-purple-500 { border-color: #8b5cf6; }
+        .border-gray-500 { border-color: #6b7280; }
+        /* Animation for elements scrolling into view */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header with Language Switcher -->
+    <header class="header text-white p-4 flex justify-between items-center">
+        <h1 id="main-title" class="text-xl md:text-2xl font-bold">સ્માર્ટફોન: મિત્ર કે દુશ્મન?</h1>
+        <div class="flex space-x-2">
+            <button id="btn-gu" class="px-4 py-2 bg-white text-blue-600 font-semibold rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none ring-2 ring-white ring-opacity-50">ગુજરાતી</button>
+            <button id="btn-en" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none">English</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4 md:p-8 max-w-4xl mx-auto">
+
+        <!-- Section 1: The Dilemma -->
+        <section id="section1" class="info-card border-gray-500 fade-in-section">
+            <div class="flex items-start space-x-4">
+                <div class="text-3xl">🤔</div>
+                <div>
+                    <h2 id="title1" class="text-2xl font-bold text-gray-800 mb-2">એક મીઠું ઝેર</h2>
+                    <p id="desc1" class="text-gray-600">સ્માર્ટફોન એક વાઇન શોપ જેવો છે જ્યાં થોડું દૂધ પણ મળે છે. પણ અમૃતના બહાને માણસ ઝેરના દરિયામાં ડૂબી જાય છે, અને પોતાના સારા ગુણો ગુમાવી દે છે.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Health Hazards -->
+        <section id="section2" class="info-card border-red-500 fade-in-section">
+            <div class="flex items-start space-x-4">
+                <div class="text-3xl">☢️</div>
+                <div>
+                    <h2 id="title2" class="text-2xl font-bold text-red-600 mb-2">આરોગ્ય માટે ખતરો</h2>
+                    <ul id="list2" class="list-disc list-inside text-gray-600 space-y-2">
+                        <li><b>રેડિએશન:</b> માઇક્રોવેવ ઓવન જેવો સિદ્ધાંત ધરાવતા ફોનથી બ્રેઇન કેન્સર, નપુંસકતા અને કિડની રોગનો ભય રહે છે.</li>
+                        <li><b>આંખો અને ઊંઘ:</b> સતત સ્ક્રીન સામે જોવાથી આંખો નબળી પડે છે અને ઊંઘની સમસ્યાઓ સર્જાય છે.</li>
+                        <li><b>રોગપ્રતિકારક શક્તિ:</b> રેડિએશન શરીરની રોગપ્રતિકારક શક્તિને નબળી પાડે છે, જેનાથી અનેક રોગોને આમંત્રણ મળે છે.</li>
+                         <li><b>હાડકાં પર અસર:</b> હાડકાં એટલા બરડ થઈ જાય છે કે સામાન્ય પડવાથી પણ મલ્ટિપલ ફ્રેક્ચર થઈ શકે છે.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Social & Family Impact -->
+        <section id="section3" class="info-card border-blue-500 fade-in-section">
+            <div class="flex items-start space-x-4">
+                <div class="text-3xl">👨‍👩‍👧‍👦</div>
+                <div>
+                    <h2 id="title3" class="text-2xl font-bold text-blue-600 mb-2">નજીકના સંબંધોનું નિકંદન</h2>
+                    <p id="desc3" class="text-gray-600 mb-2">સ્માર્ટફોન દૂરના લોકોને નજીક લાવે છે, પણ પરિવાર અને મિત્રો જેવા નજીકના લોકોને દૂર ધકેલી દે છે. ઘરમાં બધા સાથે હોવા છતાં સૌ પોતપોતાના ફોનમાં વ્યસ્ત રહે છે.</p>
+                    <blockquote id="quote3" class="border-l-4 border-blue-300 pl-4 italic text-gray-500">"માતા-પિતાની ઉપેક્ષા કરનાર વ્યક્તિ ચારે બાજુથી મુસીબતોથી ઘેરાઈ જાય છે."</blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Character & Morality -->
+        <section id="section4" class="info-card border-purple-500 fade-in-section">
+            <div class="flex items-start space-x-4">
+                <div class="text-3xl">🎭</div>
+                <div>
+                    <h2 id="title4" class="text-2xl font-bold text-purple-600 mb-2">ચારિત્ર્યનું પતન</h2>
+                    <ul id="list4" class="list-disc list-inside text-gray-600 space-y-2">
+                        <li><b>અયોગ્ય સામગ્રી:</b> ઘરમાં જે જોતાં શરમ આવે, તે ખરાબ ફોટો અને વીડિયો ફોનમાં સહેલાઈથી જોવા મળે છે, જે સંસ્કારોનો નાશ કરે છે.</li>
+                        <li><b>ભાવનાઓનું મૃત્યુ:</b> અકસ્માત કે ઝઘડા વખતે લોકો મદદ કરવાને બદલે શૂટિંગ કરવામાં વ્યસ્ત રહે છે, જે માણસાઈને મારી નાખે છે.</li>
+                        <li><b>ગુનાખોરીનું મૂળ:</b> સ્માર્ટફોન સાયબર ક્રાઇમ, ચોરી, અને છેતરપિંડી જેવા ગુનાઓનું મોટું કારણ બન્યો છે.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Financial & Time Waste -->
+        <section id="section5" class="info-card border-yellow-500 fade-in-section">
+            <div class="flex items-start space-x-4">
+                <div class="text-3xl">💸</div>
+                <div>
+                    <h2 id="title5" class="text-2xl font-bold text-yellow-600 mb-2">પૈસા અને સમયનો બગાડ</h2>
+                    <p id="desc5" class="text-gray-600">એક સામાન્ય માણસ જેટલા રૂપિયામાં ઘર ચલાવે છે, તેટલા રૂપિયા મોંઘા ફોન, તેના રિચાર્જ અને એક્સેસરીઝ પાછળ વેડફાઈ જાય છે. આ ઉપરાંત, કિંમતી સમય પણ ફોનમાં જ પસાર થઈ જાય છે.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 6: The Myth of Necessity -->
+        <section id="section6" class="info-card border-green-500 fade-in-section">
+            <div class="flex items-start space-x-4">
+                <div class="text-3xl">🏆</div>
+                <div>
+                    <h2 id="title6" class="text-2xl font-bold text-green-600 mb-2">જરૂરિયાત એક ભ્રમ</h2>
+                    <p id="desc6" class="text-gray-600">એવું માનવામાં આવે છે કે ફોન વગર બિઝનેસ ન થઈ શકે, પણ દુનિયાના બીજા નંબરના સૌથી અમીર વ્યક્તિ વોરન બફેટ પણ સેલફોન નથી વાપરતા. સાચી સફળતા એકાગ્રતા અને મહેનતથી મળે છે, ફોનથી નહીં.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Final Decision -->
+        <section id="section7" class="text-center p-6 bg-gradient-to-r from-blue-700 to-indigo-800 text-white rounded-xl shadow-lg fade-in-section">
+            <h2 id="title7" class="text-3xl font-bold mb-3">તો, હવે શું?</h2>
+            <p id="desc7" class="text-lg mb-6">સાચું, સુખી અને નીરોગી જીવન સ્માર્ટફોન વિના જ શક્ય છે. આ સત્ય સમજ્યા પછી, યુગે પોતાનો ફોન કચરા ટોપલીમાં ફેંકી દેવાનો અને ફરી ક્યારેય તેને સ્પર્શ ન કરવાનો સંકલ્પ કર્યો.</p>
+            <p id="quote7" class="text-xl font-semibold">"ખરી 'લાઈફ' તો સ્માર્ટફોન વિના જ શક્ય છે."</p>
+        </section>
+
+    </main>
+
+    <script>
+        // Data for both languages
+        const content = {
+            gu: {
+                mainTitle: "સ્માર્ટફોન: મિત્ર કે દુશ્મન?",
+                title1: "એક મીઠું ઝેર",
+                desc1: "સ્માર્ટફોન એક વાઇન શોપ જેવો છે જ્યાં થોડું દૂધ પણ મળે છે. પણ અમૃતના બહાને માણસ ઝેરના દરિયામાં ડૂબી જાય છે, અને પોતાના સારા ગુણો ગુમાવી દે છે.",
+                title2: "આરોગ્ય માટે ખતરો",
+                list2: [
+                    "<b>રેડિએશન:</b> માઇક્રોવેવ ઓવન જેવો સિદ્ધાંત ધરાવતા ફોનથી બ્રેઇન કેન્સર, નપુંસકતા અને કિડની રોગનો ભય રહે છે.",
+                    "<b>આંખો અને ઊંઘ:</b> સતત સ્ક્રીન સામે જોવાથી આંખો નબળી પડે છે અને ઊંઘની સમસ્યાઓ સર્જાય છે.",
+                    "<b>રોગપ્રતિકારક શક્તિ:</b> રેડિએશન શરીરની રોગપ્રતિકારક શક્તિને નબળી પાડે છે, જેનાથી અનેક રોગોને આમંત્રણ મળે છે.",
+                    "<b>હાડકાં પર અસર:</b> હાડકાં એટલા બરડ થઈ જાય છે કે સામાન્ય પડવાથી પણ મલ્ટિપલ ફ્રેક્ચર થઈ શકે છે."
+                ],
+                title3: "નજીકના સંબંધોનું નિકંદન",
+                desc3: "સ્માર્ટફોન દૂરના લોકોને નજીક લાવે છે, પણ પરિવાર અને મિત્રો જેવા નજીકના લોકોને દૂર ધકેલી દે છે. ઘરમાં બધા સાથે હોવા છતાં સૌ પોતપોતાના ફોનમાં વ્યસ્ત રહે છે.",
+                quote3: `"માતા-પિતાની ઉપેક્ષા કરનાર વ્યક્તિ ચારે બાજુથી મુસીબતોથી ઘેરાઈ જાય છે."`,
+                title4: "ચારિત્ર્યનું પતન",
+                list4: [
+                    "<b>અયોગ્ય સામગ્રી:</b> ઘરમાં જે જોતાં શરમ આવે, તે ખરાબ ફોટો અને વીડિયો ફોનમાં સહેલાઈથી જોવા મળે છે, જે સંસ્કારોનો નાશ કરે છે.",
+                    "<b>ભાવનાઓનું મૃત્યુ:</b> અકસ્માત કે ઝઘડા વખતે લોકો મદદ કરવાને બદલે શૂટિંગ કરવામાં વ્યસ્ત રહે છે, જે માણસાઈને મારી નાખે છે.",
+                    "<b>ગુનાખોરીનું મૂળ:</b> સ્માર્ટફોન સાયબર ક્રાઇમ, ચોરી, અને છેતરપિંડી જેવા ગુનાઓનું મોટું કારણ બન્યો છે."
+                ],
+                title5: "પૈસા અને સમયનો બગાડ",
+                desc5: "એક સામાન્ય માણસ જેટલા રૂપિયામાં ઘર ચલાવે છે, તેટલા રૂપિયા મોંઘા ફોન, તેના રિચાર્જ અને એક્સેસરીઝ પાછળ વેડફાઈ જાય છે. આ ઉપરાંત, કિંમતી સમય પણ ફોનમાં જ પસાર થઈ જાય છે.",
+                title6: "જરૂરિયાત એક ભ્રમ",
+                desc6: "એવું માનવામાં આવે છે કે ફોન વગર બિઝનેસ ન થઈ શકે, પણ દુનિયાના બીજા નંબરના સૌથી અમીર વ્યક્તિ વોરન બફેટ પણ સેલફોન નથી વાપરતા. સાચી સફળતા એકાગ્રતા અને મહેનતથી મળે છે, ફોનથી નહીં.",
+                title7: "તો, હવે શું?",
+                desc7: "સાચું, સુખી અને નીરોગી જીવન સ્માર્ટફોન વિના જ શક્ય છે. આ સત્ય સમજ્યા પછી, યુગે પોતાનો ફોન કચરા ટોપલીમાં ફેંકી દેવાનો અને ફરી ક્યારેય તેને સ્પર્શ ન કરવાનો સંકલ્પ કર્યો.",
+                quote7: `"ખરી 'લાઈફ' તો સ્માર્ટફોન વિના જ શક્ય છે."`
+            },
+            en: {
+                mainTitle: "Smartphone: Friend or Foe?",
+                title1: "A Sweet Poison",
+                desc1: "A smartphone is like a wine shop that also sells a little milk. But under the pretext of nectar, a person drowns in an ocean of poison, losing their good virtues.",
+                title2: "Health Hazards",
+                list2: [
+                    "<b>Radiation:</b> Based on a principle similar to a microwave oven, it poses a risk of brain cancer, impotence, and kidney disease.",
+                    "<b>Eyes & Sleep:</b> Constant screen time weakens eyesight and causes sleep problems.",
+                    "<b>Immunity:</b> Radiation weakens the body's immune system, inviting numerous diseases.",
+                    "<b>Bone Impact:</b> Bones become so brittle that even a simple fall can cause multiple fractures."
+                ],
+                title3: "Destruction of Close Bonds",
+                desc3: "The smartphone brings distant people closer but pushes away close ones like family and friends. Everyone is busy on their phone despite being together in the same house.",
+                quote3: `"A person who neglects their parents gets surrounded by troubles from all sides."`,
+                title4: "Decline of Character",
+                list4: [
+                    "<b>Inappropriate Content:</b> Bad photos and videos, which one would be ashamed to watch at home, are easily accessible, destroying moral values.",
+                    "<b>Death of Emotions:</b> During accidents or fights, people prefer to record videos rather than help, killing humanity.",
+                    "<b>Root of Crime:</b> The smartphone has become a major source of cybercrime, theft, and fraud."
+                ],
+                title5: "Waste of Money & Time",
+                desc5: "The amount of money an average person runs their household with is wasted on expensive phones, recharges, and accessories. Additionally, precious time is lost scrolling on the phone.",
+                title6: "The Myth of Necessity",
+                desc6: "It's a myth that business can't be done without a smartphone. Warren Buffett, one of the world's richest people, doesn't use a cellphone. True success comes from concentration and hard work, not from a phone.",
+                title7: "So, What Now?",
+                desc7: "A true, happy, and healthy life is possible only without a smartphone. Realizing this, Yug decided to throw his phone in the trash and resolved never to touch it again.",
+                quote7: `"A real 'Life' is possible only without a smartphone."`
+            }
+        };
+
+        // DOM Elements
+        const mainTitle = document.getElementById('main-title');
+        const btnGu = document.getElementById('btn-gu');
+        const btnEn = document.getElementById('btn-en');
+        const body = document.querySelector('body');
+
+        // Function to update content based on language
+        function setLanguage(lang) {
+            const data = content[lang];
+
+            // Update all text elements
+            mainTitle.textContent = data.mainTitle;
+            document.getElementById('title1').textContent = data.title1;
+            document.getElementById('desc1').textContent = data.desc1;
+            document.getElementById('title2').textContent = data.title2;
+            document.getElementById('list2').innerHTML = data.list2.map(item => `<li>${item}</li>`).join('');
+            document.getElementById('title3').textContent = data.title3;
+            document.getElementById('desc3').textContent = data.desc3;
+            document.getElementById('quote3').innerHTML = data.quote3;
+            document.getElementById('title4').textContent = data.title4;
+            document.getElementById('list4').innerHTML = data.list4.map(item => `<li>${item}</li>`).join('');
+            document.getElementById('title5').textContent = data.title5;
+            document.getElementById('desc5').textContent = data.desc5;
+            document.getElementById('title6').textContent = data.title6;
+            document.getElementById('desc6').textContent = data.desc6;
+            document.getElementById('title7').textContent = data.title7;
+            document.getElementById('desc7').textContent = data.desc7;
+            document.getElementById('quote7').innerHTML = data.quote7;
+
+            // Update button styles and body font
+            if (lang === 'gu') {
+                body.classList.add('font-gujarati');
+                body.classList.remove('font-poppins');
+                btnGu.classList.remove('bg-blue-500', 'text-white');
+                btnGu.classList.add('bg-white', 'text-blue-600');
+                btnEn.classList.add('bg-blue-500', 'text-white');
+                btnEn.classList.remove('bg-white', 'text-blue-600');
+            } else {
+                body.classList.remove('font-gujarati');
+                body.classList.add('font-poppins');
+                btnEn.classList.remove('bg-blue-500', 'text-white');
+                btnEn.classList.add('bg-white', 'text-blue-600');
+                btnGu.classList.add('bg-blue-500', 'text-white');
+                btnGu.classList.remove('bg-white', 'text-blue-600');
+            }
+        }
+
+        // Event Listeners for language buttons
+        btnGu.addEventListener('click', () => setLanguage('gu'));
+        btnEn.addEventListener('click', () => setLanguage('en'));
+
+        // Set default language on load
+        setLanguage('gu');
+
+        // Intersection Observer for scroll animations
+        const sections = document.querySelectorAll('.fade-in-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+    </script>
+</body>
+</html>

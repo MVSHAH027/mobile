@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartphone Awareness Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Vadodara:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gujarati {
+            font-family: 'Hind Vadodara', sans-serif;
+        }
+        .correct {
+            background-color: #D1FAE5 !important; /* green-100 */
+            border-color: #10B981 !important; /* green-500 */
+            color: #065F46; /* green-800 */
+        }
+        .wrong {
+            background-color: #FEE2E2 !important; /* red-100 */
+            border-color: #EF4444 !important; /* red-500 */
+            color: #991B1B; /* red-800 */
+        }
+        .correct-answer {
+            border: 2px solid #10B981; /* green-500 */
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+        .lang-btn.active {
+            background-color: #3B82F6;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+
+    <div id="app-container" class="max-w-3xl mx-auto p-4 sm:p-6">
+        
+        <header class="text-center mb-6">
+            <h1 id="quiz-title" class="text-3xl sm:text-4xl font-bold text-blue-600 dark:text-blue-400 gujarati">સ્માર્ટ ફોન: ક્વિઝ</h1>
+            <p id="quiz-subtitle" class="mt-2 text-gray-600 dark:text-gray-400 gujarati">તમારા જ્ઞાનને ચકાસો અને સ્માર્ટ ફોનના ઉપયોગ વિશે વધુ જાણો.</p>
+            
+            <div class="mt-6 flex justify-center space-x-3">
+                <button id="lang-gu" class="lang-btn active gujarati px-6 py-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-blue-500 hover:text-white transition-all duration-200" onclick="switchLanguage('gu')">ગુજરાતી</button>
+                <button id="lang-en" class="lang-btn px-6 py-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-blue-500 hover:text-white transition-all duration-200" onclick="switchLanguage('en')">English</button>
+            </div>
+        </header>
+
+        <main id="quiz-area" class="space-y-6">
+            <!-- Quiz questions will be injected here by JavaScript -->
+        </main>
+
+        <footer class="mt-10 text-center">
+             <div id="score-card" class="hidden bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                <h2 id="score-title" class="text-2xl font-bold text-blue-600 dark:text-blue-400 gujarati">તમારો સ્કોર</h2>
+                <p id="score-text" class="text-4xl font-bold my-4">0 / 30</p>
+                <p id="score-message" class="text-gray-700 dark:text-gray-300 gujarati"></p>
+                <button id="restart-btn" class="mt-6 gujarati bg-blue-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-600 transition-transform transform hover:scale-105" onclick="restartQuiz()">ફરીથી શરૂ કરો</button>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- DATA ---
+        // Contains all questions, options, and answers in both languages.
+        const quizData = [
+            // --- Chapter Questions ---
+            {
+                type: 'chapter',
+                question_gu: "સંયમના મતે, સ્માર્ટ ફોન કોના જેવો છે?",
+                question_en: "According to Sanyam, what is a smartphone like?",
+                options_gu: ["જ્ઞાનનો સાગર", "અમૃતનો વાટકો સાથે ઝેરનો દરિયો", "મિત્ર જેવો", "જરૂરી સાધન"],
+                options_en: ["An ocean of knowledge", "An ocean of poison with a bowl of nectar", "Like a friend", "A necessary tool"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: સંયમ સ્માર્ટ ફોનને ઝેરનો દરિયો કહે છે જેમાં અમૃતનો એક વાટકો પણ છે, પરંતુ તે ઝેરથી બચવું મુશ્કેલ છે.",
+                explanation_en: "Correct Answer: Sanyam calls the smartphone an ocean of poison that also contains a bowl of nectar, but it's hard to escape the poison."
+            },
+            {
+                type: 'chapter',
+                question_gu: "સંયમના કહેવા મુજબ, સ્માર્ટ ફોન સંબંધો પર કેવી અસર કરે છે?",
+                question_en: "According to Sanyam, how does the smartphone affect relationships?",
+                options_gu: ["દૂરના લોકોને નજીક અને નજીકનાને દૂર કરે છે", "બધાને નજીક લાવે છે", "કોઈ અસર કરતો નથી", "સંબંધો મજબૂત બનાવે છે"],
+                options_en: ["Brings distant people closer and pushes close ones away", "Brings everyone closer", "Has no effect", "Strengthens relationships"],
+                correctAnswerIndex: 0,
+                explanation_gu: "સાચો જવાબ: સ્માર્ટ ફોન દૂરના લોકોને નજીક લાવે છે, પણ પરિવારના સભ્યો જેવા નજીકના લોકોને દૂર કરી દે છે.",
+                explanation_en: "Correct Answer: The smartphone brings distant people closer but pushes away those who are near, like family members."
+            },
+            {
+                type: 'chapter',
+                question_gu: "ચકલીઓ (sparrows) ગાયબ થવાનું મુખ્ય કારણ શું બતાવવામાં આવ્યું છે?",
+                question_en: "What is mentioned as the main reason for the disappearance of sparrows?",
+                options_gu: ["શિકાર", "જંગલોનો નાશ", "સેલફોનનું રેડિએશન", "હવામાનમાં ફેરફાર"],
+                options_en: ["Hunting", "Deforestation", "Cellphone radiation", "Climate change"],
+                correctAnswerIndex: 2,
+                explanation_gu: "સાચો જવાબ: સંયમ સમજાવે છે કે ચકલીઓ જેવું નાનું પક્ષી સેલફોન ટાવરનું હળવું રેડિએશન પણ સહન કરી શક્યું નહીં.",
+                explanation_en: "Correct Answer: Sanyam explains that a small bird like a sparrow couldn't tolerate even the mild radiation from cellphone towers."
+            },
+            {
+                type: 'chapter',
+                question_gu: "સેલફોનના વધુ પડતા ઉપયોગથી કઈ બીમારી થવાનું સાબિત થયું છે?",
+                question_en: "Which disease has been proven to be caused by excessive use of cellphones?",
+                options_gu: ["ડાયાબિટીસ", "બ્લડ પ્રેશર", "બ્રેઇન કેન્સર", "શરદી-ખાંસી"],
+                options_en: ["Diabetes", "Blood Pressure", "Brain Cancer", "Common Cold"],
+                correctAnswerIndex: 2,
+                explanation_gu: "સાચો જવાબ: સંવાદમાં સ્પષ્ટપણે ઉલ્લેખ છે કે સેલફોનના વધુ પડતા ઉપયોગથી બ્રેઇન કેન્સર થાય છે તે એક સાબિત થયેલી વાત છે.",
+                explanation_en: "Correct Answer: The dialogue clearly states that it is a proven fact that excessive cellphone use causes brain cancer."
+            },
+            {
+                type: 'chapter',
+                question_gu: "સંયમના મતે સૌથી ભયાનક ઘટના કઈ છે?",
+                question_en: "What is the most horrible incident according to Sanyam?",
+                options_gu: ["પૈસાનું નુકસાન", "આરોગ્યનું બગડવું", "ચરિત્રનું કેન્સર", "સમયનો બગાડ"],
+                options_en: ["Loss of money", "Deterioration of health", "Cancer of character", "Waste of time"],
+                correctAnswerIndex: 2,
+                explanation_gu: "સાચો જવાબ: સંયમ કહે છે કે મોબાઇલથી ચરિત્રનું કેન્સર થાય છે, જ્યાં વ્યક્તિ શરમ વગર ખરાબ વસ્તુઓ જોતો થઈ જાય છે, જે સૌથી ભયાનક છે.",
+                explanation_en: "Correct Answer: Sanyam says that the mobile causes 'cancer of character,' where a person shamelessly starts watching bad things, which is the most horrible."
+            },
+            {
+                type: 'chapter',
+                question_gu: "કયા સફળ ઉદ્યોગપતિ સેલફોનનો ઉપયોગ કરતા નથી?",
+                question_en: "Which successful businessman does not use a cellphone?",
+                options_gu: ["બિલ ગેટ્સ", "માર્ક ઝકરબર્ગ", "જેફ બેઝોસ", "વોરન બફેટ"],
+                options_en: ["Bill Gates", "Mark Zuckerberg", "Jeff Bezos", "Warren Buffett"],
+                correctAnswerIndex: 3,
+                explanation_gu: "સાચો જવાબ: સંયમ ઉદાહરણ આપે છે કે વિશ્વના ટોચના ધનિકોમાંના એક વોરન બફેટ સેલફોન રાખતા નથી.",
+                explanation_en: "Correct Answer: Sanyam gives the example that Warren Buffett, one of the world's richest people, does not keep a cellphone."
+            },
+            {
+                type: 'chapter',
+                question_gu: "માતા-પિતાની ઉપેક્ષા કરવાથી શું પરિણામ આવે છે, એમ 'અધ્યાત્મ કલ્પદ્રુમ' ગ્રંથ મુજબ?",
+                question_en: "According to the 'Adhyatma Kalpadrum' text, what is the result of neglecting one's parents?",
+                options_gu: ["માણસ સફળ થાય છે", "માણસ ચારે બાજુથી મુસીબતોથી ઘેરાઈ જાય છે", "કોઈ ફરક પડતો નથી", "માણસ ધનવાન બને છે"],
+                options_en: ["The person becomes successful", "The person gets surrounded by troubles from all sides", "It makes no difference", "The person becomes wealthy"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: ગ્રંથનો શ્લોક કહે છે કે માતા-પિતાની ઉપેક્ષા કરવાથી વ્યક્તિ ચારે બાજુથી મુસીબતોમાં ફસાઈ જાય છે.",
+                explanation_en: "Correct Answer: The verse from the text says that neglecting parents causes a person to be surrounded by troubles from all sides."
+            },
+            {
+                type: 'chapter',
+                question_gu: "મોબાઇલ ફોનને પાછળના ખિસ્સામાં (back pocket) રાખવાથી કયો રોગ થઈ શકે છે?",
+                question_en: "Keeping a mobile phone in the back pocket can cause which disease?",
+                options_gu: ["હૃદય રોગ", "કિડનીના રોગો", "પેટનો દુખાવો", "માથાનો દુખાવો"],
+                options_en: ["Heart disease", "Kidney diseases", "Stomach ache", "Headache"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: સંવાદમાં ઉલ્લેખ છે કે ફોનને પાછળના ખિસ્સામાં રાખવાથી કિડનીના રોગો થાય છે.",
+                explanation_en: "Correct Answer: The dialogue mentions that keeping the phone in the back pocket causes kidney diseases."
+            },
+             {
+                type: 'chapter',
+                question_gu: "મોબાઇલ ફોન અને માઇક્રોવેવ ઓવન વચ્ચે શું સમાનતા છે?",
+                question_en: "What is the similarity between a mobile phone and a microwave oven?",
+                options_gu: ["બંને રસોઈ માટે વપરાય છે", "બંનેનો સિદ્ધાંત (principle) સમાન છે", "બંને સરખા દેખાય છે", "કોઈ સમાનતા નથી"],
+                options_en: ["Both are used for cooking", "Their principle is the same", "They look similar", "There is no similarity"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: સંયમ કહે છે કે મોબાઇલ અને માઇક્રોવેવ ઓવનનો સિદ્ધાંત સમાન છે, બંને રેડિએશન પર કામ કરે છે.",
+                explanation_en: "Correct Answer: Sanyam says that the principle of mobile phones and microwave ovens is the same; both work on radiation."
+            },
+            {
+                type: 'chapter',
+                question_gu: "સંવાદ મુજબ, મોબાઇલના ઉપયોગથી વ્યક્તિનું ભાવનાત્મક સ્તર (emotional level) કેવું થઈ જાય છે?",
+                question_en: "According to the dialogue, what happens to a person's emotional level with mobile use?",
+                options_gu: ["વધી જાય છે", "ખૂબ જ નીચું (down) થઈ જાય છે", "સ્થિર રહે છે", "વધુ સંવેદનશીલ બને છે"],
+                options_en: ["It increases", "It goes very down", "It remains stable", "Becomes more sensitive"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: સંવાદમાં કહેવાયું છે કે મોબાઇલના ઉપયોગથી માણસ મશીન જેવો બની જાય છે અને તેનું ભાવનાત્મક સ્તર ઘટી જાય છે.",
+                explanation_en: "Correct Answer: The dialogue states that mobile use makes a person machine-like, and their emotional level decreases."
+            },
+            {
+                type: 'chapter',
+                question_gu: "સંયમ સ્માર્ટ ફોનને બદલે કેવા ફોનનો ઉપયોગ સૂચવે છે, જો ખૂબ જ જરૂરી હોય તો?",
+                question_en: "If absolutely necessary, what kind of phone does Sanyam suggest using instead of a smartphone?",
+                options_gu: ["સૌથી મોંઘો સ્માર્ટ ફોન", "કોઈ પણ ફોન નહીં", "સ્ક્રીન-લેસ, નેટ-લેસ સિમ્પલ ફોન", "ટેબ્લેટ"],
+                options_en: ["The most expensive smartphone", "No phone at all", "A screen-less, net-less simple phone", "A tablet"],
+                correctAnswerIndex: 2,
+                explanation_gu: "સાચો જવાબ: સંયમ કહે છે કે જો ખૂબ જ જરૂરી હોય, તો સ્માર્ટ ફોનને બદલે સાદો, ઇન્ટરનેટ વગરનો ફોન વાપરી શકાય.",
+                explanation_en: "Correct Answer: Sanyam says that if it's very necessary, a simple phone without internet can be used instead of a smartphone."
+            },
+            {
+                type: 'chapter',
+                question_gu: "આજના સમયનો સૌથી મોટો ગુનો (highest crime) કયો છે?",
+                question_en: "What is the highest crime of today's time?",
+                options_gu: ["ચોરી", "લૂંટ", "સાઇબર ક્રાઇમ", "ઝઘડો"],
+                options_en: ["Theft", "Robbery", "Cybercrime", "Fighting"],
+                correctAnswerIndex: 2,
+                explanation_gu: "સાચો જવાબ: સંયમના મતે, આજનો સૌથી મોટો ગુનો સાઇબર ક્રાઇમ છે, જેનું મૂળ સ્માર્ટ ફોન છે.",
+                explanation_en: "Correct Answer: According to Sanyam, the highest crime today is cybercrime, which originates from smartphones."
+            },
+            {
+                type: 'chapter',
+                question_gu: "નાના બાળકોને સ્માર્ટ ફોન રમવા આપવો એ કોના જેવું છે?",
+                question_en: "Giving a smartphone to young children to play with is like what?",
+                options_gu: ["તેમને હોશિયાર બનાવવા જેવું", "તેમને સાપ રમવા આપવા જેવું", "તેમને ભેટ આપવા જેવું", "તેમનો વિકાસ કરવા જેવું"],
+                options_en: ["Making them smart", "Giving them a snake to play with", "Giving them a gift", "Developing them"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: સંયમ ચેતવણી આપે છે કે નાના બાળકને સ્માર્ટ ફોન આપવો એ તેને સાપ રમવા આપવા બરાબર છે, જે ભવિષ્યમાં નુકસાન કરશે.",
+                explanation_en: "Correct Answer: Sanyam warns that giving a smartphone to a young child is like giving them a snake to play with, which will harm them in the future."
+            },
+            {
+                type: 'chapter',
+                question_gu: "સંયમ યુગને શા માટે ઠપકો આપે છે?",
+                question_en: "Why does Sanyam scold Yug?",
+                options_gu: ["તેના ભવિષ્યને સુધારવા માટે", "તેને દુઃખી કરવા માટે", "તેનો અનાદર કરવા માટે", "તેની મજાક ઉડાવવા માટે"],
+                options_en: ["To improve his future", "To make him sad", "To disrespect him", "To make fun of him"],
+                correctAnswerIndex: 0,
+                explanation_gu: "સાચો જવાબ: સંયમ સ્પષ્ટ કરે છે કે તે યુગને આઘાત આપવા માટે નહીં, પણ તેના ભવિષ્યને સુધારવા માટે કહી રહ્યો છે.",
+                explanation_en: "Correct Answer: Sanyam clarifies that he is not trying to shock Yug, but is saying things to improve his future."
+            },
+            {
+                type: 'chapter',
+                question_gu: "સંવાદના અંતે યુગ શું વચન આપે છે?",
+                question_en: "What does Yug promise at the end of the dialogue?",
+                options_gu: ["તે ફોનનો ઓછો ઉપયોગ કરશે", "તે પોતાનો ફોન કચરા ટોપલીમાં ફેંકી દેશે", "તે નવો ફોન ખરીદશે", "તે સંયમની વાત નહીં માને"],
+                options_en: ["He will use the phone less", "He will throw his phone in the dustbin", "He will buy a new phone", "He will not listen to Sanyam"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: યુગ સંયમની વાતથી પ્રભાવિત થઈને વચન આપે છે કે તે પોતાનો સ્માર્ટ ફોન ફેંકી દેશે અને ફરી ક્યારેય તેને સ્પર્શ નહીં કરે.",
+                explanation_en: "Correct Answer: Influenced by Sanyam, Yug promises to throw away his smartphone and never touch it again."
+            },
+
+            // --- Real-life Scenario Questions ---
+            {
+                type: 'scenario',
+                question_gu: "તમે પરિવાર સાથે જમવા બેઠા છો અને તમારા ફોન પર નોટિફિકેશન આવે છે. તમારે શું કરવું જોઈએ?",
+                question_en: "You are having dinner with your family and a notification buzzes on your phone. What should you do?",
+                options_gu: ["તરત જ ફોન તપાસવો", "જમવાનું છોડીને મેસેજનો જવાબ આપવો", "ફોનને અવગણીને પરિવાર સાથે સમય પસાર કરવો", "મોટેથી કહેવું કે કોનો મેસેજ છે"],
+                options_en: ["Check the phone immediately", "Leave dinner to reply to the message", "Ignore the phone and spend time with family", "Announce loudly who the message is from"],
+                correctAnswerIndex: 2,
+                explanation_gu: "સાચો જવાબ: પરિવાર સાથેનો સમય અમૂલ્ય છે. ફોનને બાજુ પર રાખીને તેમની સાથે વાતચીત કરવી એ સંબંધોને મજબૂત બનાવે છે.",
+                explanation_en: "Correct Answer: Time with family is precious. Keeping the phone aside to interact with them strengthens relationships."
+            },
+            {
+                type: 'scenario',
+                question_gu: "તમે રસ્તા પર અકસ્માત જુઓ છો. તમારી પ્રથમ પ્રાથમિકતા શું હોવી જોઈએ?",
+                question_en: "You see an accident on the road. What should be your first priority?",
+                options_gu: ["ઘટનાનું વિડિયો શૂટિંગ કરવું", "સોશિયલ મીડિયા પર લાઇવ જવું", "મદદ માટે ઇમરજન્સી નંબર પર ફોન કરવો અને મદદ કરવી", "ત્યાંથી ઝડપથી નીકળી જવું"],
+                options_en: ["Record a video of the incident", "Go live on social media", "Call an emergency number for help and assist", "Quickly leave the scene"],
+                correctAnswerIndex: 2,
+                explanation_gu: "સાચો જવાબ: એક જવાબદાર નાગરિક તરીકે, આપણી ફરજ છે કે પીડિતને મદદ કરીએ અને તાત્કાલિક તબીબી સહાય માટે ફોન કરીએ, નહીં કે શૂટિંગ કરીએ.",
+                explanation_en: "Correct Answer: As a responsible citizen, our duty is to help the victim and call for immediate medical assistance, not to record it."
+            },
+            {
+                type: 'scenario',
+                question_gu: "તમારો મિત્ર મોંઘો ફોન ખરીદીને બડાઈ મારે છે. તમારો દ્રષ્ટિકોણ કેવો હોવો જોઈએ?",
+                question_en: "Your friend boasts about buying an expensive phone. What should your perspective be?",
+                options_gu: ["તેની ઈર્ષ્યા કરવી", "તેનાથી પણ મોંઘો ફોન ખરીદવાનું વિચારવું", "સમજવું કે ફોનની કિંમત તેની ઉપયોગિતામાં છે, કિંમતમાં નહીં", "તેની સાથે વાત કરવાનું બંધ કરી દેવું"],
+                options_en: ["Feel jealous of them", "Plan to buy an even more expensive phone", "Understand that a phone's value is in its utility, not its price", "Stop talking to them"],
+                correctAnswerIndex: 2,
+                explanation_gu: "સાચો જવાબ: વસ્તુઓની કિંમત કરતાં તેની જરૂરિયાત અને ઉપયોગિતા વધુ મહત્વની છે. દેખાદેખીથી બચવું જોઈએ.",
+                explanation_en: "Correct Answer: The necessity and utility of an item are more important than its price. One should avoid mindless competition."
+            },
+            {
+                type: 'scenario',
+                question_gu: "તમે રાત્રે સારી ઊંઘ લેવા માંગો છો. ફોન સંબંધિત કઈ આદત સારી છે?",
+                question_en: "You want to get good sleep at night. Which phone-related habit is good?",
+                options_gu: ["સૂતા પહેલાં સોશિયલ મીડિયા જોવું", "સૂવાના ઓછામાં ઓછા એક કલાક પહેલાં ફોનનો ઉપયોગ બંધ કરવો", "ફોનને ઓશિકા નીચે રાખીને સૂવું", "ચાર્જિંગમાં રાખીને વિડિયો જોતા જોતા સૂઈ જવું"],
+                options_en: ["Scrolling social media just before sleeping", "Stopping phone use at least an hour before bed", "Sleeping with the phone under your pillow", "Falling asleep while watching videos with the phone charging"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: ફોનની વાદળી રોશની (blue light) ઊંઘના હોર્મોન્સને અસર કરે છે. સૂતા પહેલાં ફોનથી દૂર રહેવાથી સારી ઊંઘ આવે છે.",
+                explanation_en: "Correct Answer: The blue light from the phone affects sleep hormones. Staying away from the phone before bed promotes better sleep."
+            },
+            {
+                type: 'scenario',
+                question_gu: "તમને એક સનસનાટીભર્યા સમાચાર સાથે 'ફોરવર્ડ કરેલો' મેસેજ મળે છે. તમારે શું કરવું જોઈએ?",
+                question_en: "You receive a 'forwarded' message with sensational news. What should you do?",
+                options_gu: ["તરત જ બધા ગ્રુપ્સમાં ફોરવર્ડ કરવો", "સ્રોતની ચકાસણી કર્યા વિના તેના પર વિશ્વાસ કરવો", "શેર કરતા પહેલા સમાચારની સચ્ચાઈની ખાતરી કરવી", "મેસેજને અવગણવો"],
+                options_en: ["Immediately forward it to all groups", "Believe it without verifying the source", "Verify the authenticity of the news before sharing", "Ignore the message"],
+                correctAnswerIndex: 2,
+                explanation_gu: "સાચો જવાબ: ખોટી માહિતી અને અફવાઓ ફેલાવવી એ નુકસાનકારક છે. કોઈપણ માહિતી શેર કરતા પહેલા તેની સત્યતા તપાસવી એ આપણી જવાબદારી છે.",
+                explanation_en: "Correct Answer: Spreading misinformation and rumors is harmful. It is our responsibility to check the facts before sharing any information."
+            },
+            {
+                type: 'scenario',
+                question_gu: "તમે ડ્રાઇવિંગ કરી રહ્યા છો અને એક બિન-જરૂરી મેસેજ આવે છે. તમારે તેને ક્યારે તપાસવો જોઈએ?",
+                question_en: "You are driving and a non-urgent message arrives. When should you check it?",
+                options_gu: ["તરત જ, ટ્રાફિકમાં", "ગાડી ચલાવતા ચલાવતા", "ગાડી સુરક્ષિત રીતે પાર્ક કર્યા પછી", "રેડ લાઇટ પર"],
+                options_en: ["Immediately, in traffic", "While driving the car", "After you have safely parked the car", "At a red light"],
+                correctAnswerIndex: 2,
+                explanation_gu: "સાચો જવાબ: ડ્રાઇવિંગ કરતી વખતે ફોનનો ઉપયોગ કરવો એ તમારા અને બીજાના જીવન માટે અત્યંત જોખમી છે. હંમેશા પાર્ક કર્યા પછી જ ફોન તપાસો.",
+                explanation_en: "Correct Answer: Using a phone while driving is extremely dangerous for your life and others. Always check your phone only after parking."
+            },
+            {
+                type: 'scenario',
+                question_gu: "તમારો મિત્ર સાયબરબુલિંગનો શિકાર બન્યો છે. તમારે શું કરવું જોઈએ?",
+                question_en: "Your friend is a victim of cyberbullying. What should you do?",
+                options_gu: ["તેની મજાક ઉડાવવી", "તેને ટેકો આપવો, તેની સાથે વાત કરવી અને સત્તાવાળાઓને જાણ કરવી", "તેને અવગણવો", "તેને સોશિયલ મીડિયા બંધ કરવા કહેવું"],
+                options_en: ["Make fun of them", "Support them, talk to them, and report to authorities", "Ignore them", "Tell them to quit social media"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: સાયબરબુલિંગ એક ગંભીર સમસ્યા છે. પીડિતને ભાવનાત્મક ટેકો આપવો અને યોગ્ય પગલાં લેવામાં મદદ કરવી એ સાચી મિત્રતા છે.",
+                explanation_en: "Correct Answer: Cyberbullying is a serious issue. Providing emotional support to the victim and helping them take appropriate action is true friendship."
+            },
+            {
+                type: 'scenario',
+                question_gu: "તમે એક નવી એપ ઇન્સ્ટોલ કરી રહ્યા છો જે બિનજરૂરી પરવાનગીઓ (permissions) માંગે છે. તમારે શું કરવું જોઈએ?",
+                question_en: "You are installing a new app that asks for unnecessary permissions. What should you do?",
+                options_gu: ["બધી પરવાનગીઓ આપી દેવી", "એપને અનઇન્સ્ટોલ કરી દેવી", "ફક્ત કેમેરાની પરવાનગી આપવી", "મિત્રોને પૂછવું કે શું કરવું"],
+                options_en: ["Grant all permissions", "Uninstall the app", "Grant only camera permission", "Ask friends what to do"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: એપ્સને બિનજરૂરી પરવાનગીઓ આપવાથી તમારી ગોપનીયતા (privacy) અને સુરક્ષા જોખમમાં મુકાઈ શકે છે. શંકાસ્પદ એપ્સથી દૂર રહો.",
+                explanation_en: "Correct Answer: Granting unnecessary permissions to apps can risk your privacy and security. Stay away from suspicious apps."
+            },
+            {
+                type: 'scenario',
+                question_gu: "તમે કોઈ મિત્ર સાથે ઊંડાણપૂર્વક, અર્થપૂર્ણ વાતચીત કરવા માંગો છો. શ્રેષ્ઠ વાતાવરણ કયું છે?",
+                question_en: "You want to have a deep, meaningful conversation with a friend. What is the best setting?",
+                options_gu: ["ચેટિંગ દ્વારા", "વિડિયો કોલ પર", "બંનેના ફોન બાજુ પર મૂકીને, રૂબરૂમાં", "કાફેમાં, જ્યાં બંને ફોન વાપરી શકે"],
+                options_en: ["Through chatting", "On a video call", "Face-to-face, with both phones put away", "In a cafe where both can use their phones"],
+                correctAnswerIndex: 2,
+                explanation_gu: "સાચો જવાબ: રૂબરૂ વાતચીત દરમિયાન ધ્યાન ભંગ ન થાય ત્યારે જ સાચા ભાવ અને લાગણીઓ વ્યક્ત થાય છે. ફોનની ગેરહાજરી સંબંધોને ગાઢ બનાવે છે.",
+                explanation_en: "Correct Answer: True emotions and feelings are expressed best during face-to-face conversations without distractions. The absence of phones deepens relationships."
+            },
+            {
+                type: 'scenario',
+                question_gu: "જ્યારે તમારી પાસે ફોન ન હોય ત્યારે તમને બેચેની (anxious) લાગે છે. આ શેનો સંકેત હોઈ શકે છે?",
+                question_en: "You feel anxious when you don't have your phone. This could be a sign of what?",
+                options_gu: ["તમે ખૂબ જ લોકપ્રિય છો", "ડિજિટલ વ્યસન અથવા નોમોફોબિયા", "તમે જવાબદાર વ્યક્તિ છો", "કંઈ ખાસ નહીં, આ સામાન્ય છે"],
+                options_en: ["You are very popular", "Digital addiction or Nomophobia", "You are a responsible person", "Nothing special, it's normal"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: ફોનની ગેરહાજરીમાં બેચેની થવી એ 'નોમોફોબિયા' (No-Mobile-Phobia) તરીકે ઓળખાય છે, જે એક પ્રકારનું ડિજિટલ વ્યસન છે.",
+                explanation_en: "Correct Answer: Feeling anxious in the absence of a phone is known as 'Nomophobia' (No-Mobile-Phobia), which is a form of digital addiction."
+            },
+            {
+                type: 'scenario',
+                question_gu: "એક નાનું બાળક ફોન પર ગેમ રમવા માટે જીદ કરે છે. માતા-પિતાએ શું કરવું જોઈએ?",
+                question_en: "A small child insists on playing a game on the phone. What should the parents do?",
+                options_gu: ["તરત જ ફોન આપી દેવો", "તેને વૈકલ્પિક, બિન-સ્ક્રીન પ્રવૃત્તિઓ ઓફર કરવી", "તેને ઠપકો આપવો", "ફોન છુપાવી દેવો"],
+                options_en: ["Give the phone immediately", "Offer alternative, non-screen activities", "Scold the child", "Hide the phone"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: બાળકોને નાનપણથી જ સ્ક્રીનની લત લગાડવાને બદલે શારીરિક અને રચનાત્મક રમતોમાં પ્રોત્સાહિત કરવા તેમના વિકાસ માટે વધુ સારું છે.",
+                explanation_en: "Correct Answer: Encouraging children in physical and creative games is better for their development than getting them addicted to screens from a young age."
+            },
+            {
+                type: 'scenario',
+                question_gu: "તમે સિનેમા હોલમાં ફિલ્મ જોઈ રહ્યા છો. ફોન માટે યોગ્ય શિષ્ટાચાર શું છે?",
+                question_en: "You are watching a movie in a cinema hall. What is the proper phone etiquette?",
+                options_gu: ["ફોનને સાયલન્ટ કરીને બાજુ પર મૂકી દેવો", "વારંવાર સમય જોવા માટે ફોન ચાલુ કરવો", "ધીમા અવાજે ફોન પર વાત કરવી", "સ્ક્રીનની બ્રાઇટનેસ વધારીને મેસેજ કરવા"],
+                options_en: ["Silence the phone and put it away", "Turn on the phone frequently to check the time", "Talk on the phone in a low voice", "Text with the screen brightness turned up"],
+                correctAnswerIndex: 0,
+                explanation_gu: "સાચો જવાબ: સાર્વજનિક સ્થળોએ, ખાસ કરીને સિનેમા હોલમાં, ફોનની રોશની અને અવાજ બીજાને ખલેલ પહોંચાડે છે. ફોનને સાયલન્ટ કરીને દૂર રાખવો એ શિષ્ટાચાર છે.",
+                explanation_en: "Correct Answer: In public places, especially cinema halls, the light and sound from a phone disturb others. It is proper etiquette to silence it and keep it away."
+            },
+            {
+                type: 'scenario',
+                question_gu: "તમે અભ્યાસ માટે બેઠા છો. તમારો ફોન ક્યાં હોવો જોઈએ?",
+                question_en: "You are sitting down to study. Where should your phone be?",
+                options_gu: ["તમારી સામે, ટેબલ પર", "તમારા ખિસ્સામાં, વાઇબ્રેટ મોડ પર", "બીજા રૂમમાં અથવા બંધ કરેલો", "હાથમાં"],
+                options_en: ["In front of you, on the table", "In your pocket, on vibrate mode", "In another room or turned off", "In your hand"],
+                correctAnswerIndex: 2,
+                explanation_gu: "સાચો જવાબ: અભ્યાસમાં સંપૂર્ણ એકાગ્રતા માટે, ધ્યાન ભટકાવતી વસ્તુઓ દૂર રાખવી જરૂરી છે. ફોનને દૂર રાખવાથી તમે વધુ સારી રીતે ધ્યાન કેન્દ્રિત કરી શકશો.",
+                explanation_en: "Correct Answer: For complete concentration in studies, it is necessary to keep distractions away. Keeping the phone away will help you focus better."
+            },
+            {
+                type: 'scenario',
+                question_gu: "ફોનનો ઉપયોગ કર્યા પછી તમારી આંખોમાં તાણ અનુભવાય છે. સારી પ્રેક્ટિસ શું છે?",
+                question_en: "Your eyes feel strained after using the phone. What is a good practice?",
+                options_gu: ["વધુ બ્રાઇટનેસ સાથે ફોન વાપરવો", "20-20-20 નિયમનું પાલન કરવું", "આંખો ચોળવી", "તાત્કાલિક ફરીથી ફોન જોવાનું શરૂ કરવું"],
+                options_en: ["Use the phone with more brightness", "Follow the 20-20-20 rule", "Rub your eyes", "Immediately start looking at the phone again"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: 20-20-20 નિયમ (દર 20 મિનિટે, 20 સેકન્ડ માટે, 20 ફૂટ દૂર જોવું) આંખોને આરામ આપવામાં અને ડિજિટલ આઇ સ્ટ્રેન ઘટાડવામાં મદદ કરે છે.",
+                explanation_en: "Correct Answer: The 20-20-20 rule (every 20 minutes, look at something 20 feet away for 20 seconds) helps relax the eyes and reduce digital eye strain."
+            },
+            {
+                type: 'scenario',
+                question_gu: "તમે નવું સોશિયલ મીડિયા એકાઉન્ટ બનાવી રહ્યા છો. તમારી સુરક્ષા માટે શું મહત્વનું છે?",
+                question_en: "You are creating a new social media account. What is crucial for your safety?",
+                options_gu: ["તમારો ફોન નંબર અને સરનામું જાહેર કરવું", "મજબૂત પ્રાઇવસી સેટિંગ્સ ગોઠવવા", "કોઈપણ ફ્રેન્ડ રિક્વેસ્ટ સ્વીકારવી", "તમારો પાસવર્ડ સરળ રાખવો"],
+                options_en: ["Making your phone number and address public", "Setting up strong privacy settings", "Accepting any friend request", "Keeping your password simple"],
+                correctAnswerIndex: 1,
+                explanation_gu: "સાચો જવાબ: ઓનલાઈન સુરક્ષા માટે, તમારી અંગત માહિતી કોણ જોઈ શકે તે નિયંત્રિત કરવું ખૂબ જ મહત્વપૂર્ણ છે. મજબૂત પ્રાઇવસી સેટિંગ્સ તમને સુરક્ષિત રાખે છે.",
+                explanation_en: "Correct Answer: For online safety, controlling who can see your personal information is very important. Strong privacy settings keep you safe."
+            }
+        ];
+
+        // --- STATE ---
+        // Manages the current state of the quiz.
+        let currentLanguage = 'gu';
+        let score = 0;
+        let answeredQuestions = 0;
+
+        // --- UI ELEMENTS ---
+        const quizArea = document.getElementById('quiz-area');
+        const scoreCard = document.getElementById('score-card');
+        const scoreText = document.getElementById('score-text');
+        const scoreMessage = document.getElementById('score-message');
+        const scoreTitle = document.getElementById('score-title');
+        const quizTitle = document.getElementById('quiz-title');
+        const quizSubtitle = document.getElementById('quiz-subtitle');
+        const restartBtn = document.getElementById('restart-btn');
+        const langGuBtn = document.getElementById('lang-gu');
+        const langEnBtn = document.getElementById('lang-en');
+        
+        const uiText = {
+            gu: {
+                quizTitle: "સ્માર્ટ ફોન: ક્વિઝ",
+                quizSubtitle: "તમારા જ્ઞાનને ચકાસો અને સ્માર્ટ ફોનના ઉપયોગ વિશે વધુ જાણો.",
+                scoreTitle: "તમારો સ્કોર",
+                restartBtn: "ફરીથી શરૂ કરો",
+                correct: "સાચો જવાબ!",
+                wrong: "ખોટો જવાબ!",
+                questionFromChapter: "પ્રકરણમાંથી પ્રશ્ન",
+                realLifeScenario: "વાસ્તવિક જીવનનો પ્રશ્ન"
+            },
+            en: {
+                quizTitle: "Smartphone: The Quiz",
+                quizSubtitle: "Test your knowledge and learn more about smartphone usage.",
+                scoreTitle: "Your Score",
+                restartBtn: "Restart Quiz",
+                correct: "Correct!",
+                wrong: "Wrong!",
+                questionFromChapter: "Question from Chapter",
+                realLifeScenario: "Real-life Scenario"
+            }
+        };
+
+        // --- FUNCTIONS ---
+
+        /**
+         * Switches the language of the entire quiz and re-renders it.
+         * @param {string} lang - The language to switch to ('gu' or 'en').
+         */
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update button styles
+            langGuBtn.classList.toggle('active', lang === 'gu');
+            langEnBtn.classList.toggle('active', lang === 'en');
+
+            // Update header text
+            quizTitle.textContent = uiText[lang].quizTitle;
+            quizSubtitle.textContent = uiText[lang].quizSubtitle;
+            quizTitle.className = `text-3xl sm:text-4xl font-bold text-blue-600 dark:text-blue-400 ${lang === 'gu' ? 'gujarati' : ''}`;
+            quizSubtitle.className = `mt-2 text-gray-600 dark:text-gray-400 ${lang === 'gu' ? 'gujarati' : ''}`;
+
+            // Update score card text
+            scoreTitle.textContent = uiText[lang].scoreTitle;
+            scoreTitle.className = `text-2xl font-bold text-blue-600 dark:text-blue-400 ${lang === 'gu' ? 'gujarati' : ''}`;
+            restartBtn.textContent = uiText[lang].restartBtn;
+            restartBtn.className = `mt-6 bg-blue-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-600 transition-transform transform hover:scale-105 ${lang === 'gu' ? 'gujarati' : ''}`;
+            
+            renderQuiz();
+            updateScoreDisplay();
+        }
+
+        /**
+         * Renders all quiz questions based on the current language.
+         */
+        function renderQuiz() {
+            quizArea.innerHTML = '';
+            quizData.forEach((item, index) => {
+                const questionText = currentLanguage === 'gu' ? item.question_gu : item.question_en;
+                const options = currentLanguage === 'gu' ? item.options_gu : item.options_en;
+                const questionType = item.type === 'chapter' ? uiText[currentLanguage].questionFromChapter : uiText[currentLanguage].realLifeScenario;
+                const typeColor = item.type === 'chapter' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200' : 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200';
+
+                const questionElement = document.createElement('div');
+                questionElement.className = 'bg-white dark:bg-gray-800 p-5 sm:p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700';
+                
+                let optionsHTML = '';
+                options.forEach((option, optionIndex) => {
+                    optionsHTML += `
+                        <li>
+                            <button 
+                                class="option-btn w-full text-left p-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-gray-600 transition-colors duration-200 ${currentLanguage === 'gu' ? 'gujarati' : ''}"
+                                onclick="checkAnswer(${index}, ${optionIndex}, this)"
+                            >
+                                ${option}
+                            </button>
+                        </li>
+                    `;
+                });
+
+                questionElement.innerHTML = `
+                    <div class="flex justify-between items-center mb-4">
+                        <p class="text-lg font-semibold ${currentLanguage === 'gu' ? 'gujarati' : ''}">${index + 1}. ${questionText}</p>
+                        <span class="text-xs font-medium px-2.5 py-0.5 rounded-full ${typeColor} ${currentLanguage === 'gu' ? 'gujarati' : ''}">${questionType}</span>
+                    </div>
+                    <ul class="space-y-3 mt-4">
+                        ${optionsHTML}
+                    </ul>
+                    <div id="feedback-${index}" class="mt-4 text-sm font-medium p-3 rounded-lg hidden ${currentLanguage === 'gu' ? 'gujarati' : ''}"></div>
+                `;
+                quizArea.appendChild(questionElement);
+            });
+        }
+
+        /**
+         * Checks the selected answer, provides feedback, and updates the score.
+         * @param {number} questionIndex - The index of the question in quizData.
+         * @param {number} selectedOptionIndex - The index of the user's selected option.
+         * @param {HTMLElement} selectedButton - The button element that was clicked.
+         */
+        function checkAnswer(questionIndex, selectedOptionIndex, selectedButton) {
+            const question = quizData[questionIndex];
+            const feedbackElement = document.getElementById(`feedback-${questionIndex}`);
+            const parentOptions = selectedButton.closest('ul');
+            const allOptionButtons = parentOptions.querySelectorAll('.option-btn');
+
+            // Disable all buttons for this question to prevent re-answering
+            allOptionButtons.forEach(btn => btn.disabled = true);
+
+            const explanation = currentLanguage === 'gu' ? question.explanation_gu : question.explanation_en;
+
+            if (selectedOptionIndex === question.correctAnswerIndex) {
+                score++;
+                selectedButton.classList.add('correct');
+                feedbackElement.textContent = `${uiText[currentLanguage].correct} ${explanation}`;
+                feedbackElement.className = `mt-4 text-sm font-medium p-3 rounded-lg block bg-green-50 dark:bg-green-900/50 text-green-700 dark:text-green-300 ${currentLanguage === 'gu' ? 'gujarati' : ''}`;
+            } else {
+                selectedButton.classList.add('wrong');
+                // Highlight the correct answer
+                allOptionButtons[question.correctAnswerIndex].classList.add('correct-answer');
+                feedbackElement.textContent = `${uiText[currentLanguage].wrong} ${explanation}`;
+                feedbackElement.className = `mt-4 text-sm font-medium p-3 rounded-lg block bg-red-50 dark:bg-red-900/50 text-red-700 dark:text-red-300 ${currentLanguage === 'gu' ? 'gujarati' : ''}`;
+            }
+            
+            answeredQuestions++;
+            updateScoreDisplay();
+        }
+
+        /**
+         * Updates the score display and shows the final card if all questions are answered.
+         */
+        function updateScoreDisplay() {
+            scoreText.textContent = `${score} / ${quizData.length}`;
+            if (answeredQuestions === quizData.length) {
+                const percentage = (score / quizData.length) * 100;
+                let message = '';
+                let message_gu = '';
+                if (percentage >= 80) {
+                    message_gu = "ઉત્તમ! તમે સ્માર્ટ ફોનના જોખમો અને જવાબદારીઓ વિશે ખૂબ જાગૃત છો.";
+                    message = "Excellent! You are very aware of the risks and responsibilities of smartphones.";
+                } else if (percentage >= 50) {
+                    message_gu = "ખૂબ સરસ! તમે ઘણું જાણો છો, પણ હજુ સુધારાને અવકાશ છે.";
+                    message = "Very good! You know a lot, but there's still room for improvement.";
+                } else {
+                    message_gu = "પ્રયત્ન ચાલુ રાખો! આ ક્વિઝ તમને વધુ શીખવામાં મદદ કરશે. સંવાદ ફરીથી વાંચો.";
+                    message = "Keep trying! This quiz will help you learn more. Read the dialogue again.";
+                }
+                scoreMessage.textContent = currentLanguage === 'gu' ? message_gu : message;
+                scoreMessage.className = `text-gray-700 dark:text-gray-300 ${currentLanguage === 'gu' ? 'gujarati' : ''}`;
+                scoreCard.classList.remove('hidden');
+                scoreCard.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        /**
+         * Resets the quiz to its initial state.
+         */
+        function restartQuiz() {
+            score = 0;
+            answeredQuestions = 0;
+            scoreCard.classList.add('hidden');
+            renderQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- INITIALIZATION ---
+        // Renders the quiz for the first time when the page loads.
+        document.addEventListener('DOMContentLoaded', () => {
+            renderQuiz();
+        });
+
+    </script>
+</body>
+</html>
